@@ -1,4 +1,5 @@
 #import "ViewController.h"
+#import "rs_gl_test.h"
 
 @interface ViewController ()
 @property(strong, nonatomic) EAGLContext *context;
@@ -24,6 +25,8 @@
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     
     [EAGLContext setCurrentContext:self.context];
+    
+//    init_env_rs();
 }
 
 - (void)dealloc {
@@ -60,7 +63,7 @@
     [view bindDrawable];
     
     // ----------- issue your draw call
-    
+    init_env_rs();
 }
 
 @end
