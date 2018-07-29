@@ -9,6 +9,14 @@
 #ifndef rs_gl_test_h
 #define rs_gl_test_h
 
-void init_env_rs();
+//void init_env_rs();
+
+struct GLProgramWrapper {
+    void* program;
+    float timestamp;
+};
+
+struct GLProgramWrapper* rust_opengl_backend_init();
+void rust_opengl_backend_draw(struct GLProgramWrapper* wrapper);
 
 #endif /* rs_gl_test_h */

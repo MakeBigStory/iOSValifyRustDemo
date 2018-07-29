@@ -1,7 +1,9 @@
 #import "ViewController.h"
 #import "rs_gl_test.h"
 
-@interface ViewController ()
+@interface ViewController () {
+    struct GLProgramWrapper * _wrapper;
+}
 @property(strong, nonatomic) EAGLContext *context;
 @end
 
@@ -11,6 +13,15 @@
     [super viewDidLoad];
 
     [self _setupEGLContext];
+    _wrapper = rust_opengl_backend_init();
+}
+
+- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
+    [EAGLContext setCurrentContext:self.context];
+    [view bindDrawable];
+    
+    // ----------- issue your draw call
+    rust_opengl_backend_draw(_wrapper);
 }
 
 - (void)_setupEGLContext {
@@ -25,8 +36,6 @@
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     
     [EAGLContext setCurrentContext:self.context];
-    
-//    init_env_rs();
 }
 
 - (void)dealloc {
@@ -56,14 +65,6 @@
         [EAGLContext setCurrentContext:nil];
     }
     self.context = nil;
-}
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-    [EAGLContext setCurrentContext:self.context];
-    [view bindDrawable];
-    
-    // ----------- issue your draw call
-    init_env_rs();
 }
 
 @end
